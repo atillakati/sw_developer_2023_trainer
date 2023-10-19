@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ namespace TeilnehmerVerwaltung_v2
          * Implementieren Sie eine Applikation mit der beliebig viele Teilnehmerdaten 
          * erfasst und dargestellt werden können. 
          * Folgende Anforderung sollen dabei erfüllt werden:
-                        
+                     
+            - max. Anzahl der Teilnehmer soll zu Beginn vom User befragt werden
             - Einlesen folgender Daten:
                 - Name, Vorname
                 - Geburtsdatum
@@ -27,20 +29,48 @@ namespace TeilnehmerVerwaltung_v2
 
         static void Main(string[] args)
         {
+            int teilnehmerCount = 0;
             Teilnehmer teilnehmer = new Teilnehmer();
+            Teilnehmer[] teilnehmerListe;
             string headerText = "Teilnehmer Verwaltung v2.0  ©2023 WIFI-Soft";
 
             //header ausgeben
             CreateHeader(headerText, ConsoleColor.Yellow, true);
 
+            //abfrage anzahl teilnehmer
+            teilnehmerCount = ReadInt("Bitte Anzahl Teilnehmer eingeben: ");
+
+            //TeilnehmerListe vorbereiten
+            teilnehmerListe = new Teilnehmer[teilnehmerCount];
+
             //teilnehmer daten; eingabe starten
             Console.WriteLine("Bitte geben Sie die Teilnehmer Daten ein: ");
-            teilnehmer = GetStudentInfos();
+            for (int i = 0; i < teilnehmerListe.Length; i++)
+            {
+                Console.WriteLine($"\nTeilnehmer {i + 1} / {teilnehmerListe.Length}:");                
+                //Hint: Die GetStudentInfos() Methode kann auch überladen werden, damit sie eine ganze Liste einliest...
+                teilnehmerListe[i] = GetStudentInfos();                
+            }
 
             //ausgabe der daten
-            DisplayStudentInfo(teilnehmer);
+            Console.WriteLine("\nDie Teilnehmerdaten: \n");
+            DisplayStudentInfo(teilnehmerListe);
+            
+            //TODO: Implement JSON and XML format too!!!
+            SaveStudentInfosToFile(teilnehmerListe, "meineTeilnehmerDaten.csv");
+        }
 
-            //SaveStudenInfosToFile(teilnehmer, "meineTeilnehmerDaten.json");
+        private static void SaveStudentInfosToFile(Teilnehmer[] students, string filename)
+        {
+            //TODO: Wie funktioniert StreamReader?
+            using (StreamWriter sw = new StreamWriter(filename, true))
+            {
+                for (int i = 0; i < students.Length; i++)
+                {
+                    string dataLine = $"{students[i].Name}, {students[i].Nachname}, {students[i].Geburtsdatum.ToShortDateString()}, {students[i].Plz}, {students[i].Ort}";
+                    sw.WriteLine(dataLine);
+                }
+            }
         }
 
         private static Teilnehmer GetStudentInfos()
@@ -56,10 +86,16 @@ namespace TeilnehmerVerwaltung_v2
             return teilnehmer;
         }
 
-        private static void DisplayStudentInfo(Teilnehmer studentInfo)
+        private static void DisplayStudentInfo(Teilnehmer[] studentInfos)
         {
-            Console.WriteLine("\nDie Teilnehmerdaten: \n");
+            for(int i = 0; i < studentInfos.Length; i++)
+            {
+                DisplayStudentInfo(studentInfos[i]);
+            }
+        }
 
+        private static void DisplayStudentInfo(Teilnehmer studentInfo)
+        {            
             Console.WriteLine($"\t{studentInfo.Name}, {studentInfo.Nachname}, {studentInfo.Geburtsdatum.ToShortDateString()}, {studentInfo.Plz}, {studentInfo.Ort}");
         }
 
