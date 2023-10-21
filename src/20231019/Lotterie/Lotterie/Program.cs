@@ -9,121 +9,105 @@ namespace Lotterie
         static Random rnd = new Random();
         private const int MAX_VALUE = 45;
         private const int MAX_VALUE_COUNT = 6;
+        private const int MAX_COLUMN_COUNT = 6;
 
         static void Main(string[] args)
         {
             int tipCounter = 0;
-            int startPosx = 3;
-            int startPosy = 6;
+            int startPosTop = 6;
+            int startPosLeft = 6;
 
             CreateHeader("Lotto 6 aus 45", ConsoleColor.Yellow, true);
-
-            tipCounter = ReadInt("Bitte die Anzahl der Tips eingeben: ");
+            TipDisplayConfiguration displayConfig = CreateDisplayConfig();
                         
+            tipCounter = ReadInt("Bitte die Anzahl der Tips eingeben: ", 0, 12);
+            startPosTop = Console.CursorTop + 1;
+            
             for (int i = 0; i < tipCounter; i++)
             {
                 int[] tip = CreateTip(1, MAX_VALUE, MAX_VALUE_COUNT);
 
-                //TODO: Die Berechnung der Ausgabeposition ist nicht cool.
-                startPosx = 3 + i * 21;
-                if(startPosx + 21 > Console.WindowWidth)
-                {
-                    startPosx = 3;
-                    startPosy += 9;
-                }
-
-                DisplayTip(tip, startPosx, startPosy);
+                displayConfig.Position = CalcDisplayPosition(startPosTop, startPosLeft, i);                
+                DisplayTip(tip, displayConfig);
             }
 
-            Console.WriteLine();            
+            Console.WriteLine();
         }
 
-        private static void DisplayValues(int[] tip)
+        private static TipDisplayConfiguration CreateDisplayConfig()
         {
-            Array.Sort(tip);
+            TipDisplayConfiguration displayConfig = new TipDisplayConfiguration();
 
-            for (int i = 0; i < tip.Length; i++)
-            {
-                Console.Write($"{tip[i]:00} ");
-            }
-            Console.WriteLine("\n");
+            displayConfig.Foreground = ConsoleColor.DarkGray;
+            displayConfig.HighlightForeground = ConsoleColor.Yellow;
+            displayConfig.HighlightBackground = ConsoleColor.DarkGray;
+
+            return displayConfig;
         }
 
-        private static void DisplayTip(int[] tip, int left, int top)
+        private static DisplayPosition CalcDisplayPosition(int startPositionTop, int startPositionLeft, int tipCounter)
+        {
+            const int TIP_WIDTH = 21;
+            const int TIP_HIGHT = 9;
+
+            int column = tipCounter % MAX_COLUMN_COUNT;
+            int row = tipCounter / MAX_COLUMN_COUNT;
+
+            return new DisplayPosition
+            {
+                Top = startPositionTop + row * TIP_HIGHT,
+                Left = startPositionLeft + column * TIP_WIDTH
+            };
+        }
+        
+        private static void DisplayTip(int[] tip, TipDisplayConfiguration displayConfig)
         {
             int charCounter = 0;
-            int lineCounter = top;
+            int lineCounter = displayConfig.Position.Top;
 
             Array.Sort(tip);
 
-            Console.SetCursorPosition(left, lineCounter++);
+            Console.SetCursorPosition(displayConfig.Position.Left, lineCounter++);
 
             for (int i = 1; i <= MAX_VALUE; i++)
             {
                 if (ExistsInList(tip, i))
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = displayConfig.HighlightForeground;
+                    Console.BackgroundColor = displayConfig.HighlightBackground;
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.ResetColor();
+                    Console.ForegroundColor = displayConfig.Foreground;
                 }
 
-                Console.Write($"{i:00} ");
+                Console.Write($"{i:00}");
+                Console.ResetColor();
+                Console.Write(" ");
                 charCounter++;
 
                 if (charCounter >= 6)
                 {
                     charCounter = 0;
                     Console.WriteLine();
-                    Console.SetCursorPosition(left, lineCounter++);
+                    Console.SetCursorPosition(displayConfig.Position.Left, lineCounter++);
                 }
             }
 
-            Console.ResetColor();
-            Console.WriteLine();
-        }
-
-        private static void DisplayTip(int[] tip)
-        {
-            int charCounter = 0;
-
-            Array.Sort(tip);
-
-            for (int i = 1; i <= MAX_VALUE; i++)
-            {
-                if (ExistsInList(tip, i)) 
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                }
-
-                Console.Write($"{i:00} ");
-                charCounter++;
-
-                if (charCounter >= 6)
-                {
-                    charCounter = 0;
-                    Console.WriteLine();
-                }
-            }
-          
             Console.ResetColor();
             Console.WriteLine();
         }
 
         private static int[] CreateTip(int minValue, int maxValue, int valueCount)
-        {            
+        {
             int[] values = new int[valueCount];
             int randomValue = 0;
 
-            for (int i = 0; i<valueCount; i++)
+            for (int i = 0; i < valueCount; i++)
             {
-                randomValue = rnd.Next(minValue, maxValue+1);
-                if(!ExistsInList(values, randomValue))
+                randomValue = rnd.Next(minValue, maxValue + 1);
+                if (!ExistsInList(values, randomValue))
                 {
                     values[i] = randomValue;
                 }
@@ -138,7 +122,7 @@ namespace Lotterie
 
         private static bool ExistsInList(int[] values, int newValue)
         {
-            for (int i = 0;i<values.Length;i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 if (values[i] == newValue)
                 {
@@ -149,18 +133,25 @@ namespace Lotterie
             return false;
         }
 
-        private static string ReadString(string inputPrompt)
+        private static int ReadInt(string inputPrompt, int minInputValue, int maxInputValue)
         {
-            string input = string.Empty;
+            bool valueIsValid = false;
+            int inputValue = 0;
 
             do
             {
-                Console.Write(inputPrompt);
-                input = Console.ReadLine();
-            }
-            while (string.IsNullOrEmpty(input));
+                valueIsValid = true;
 
-            return input;
+                inputValue = ReadInt(inputPrompt);
+                if(inputValue < minInputValue || inputValue > maxInputValue)
+                {
+                    Console.WriteLine($"ERROR: Eingabe ausserhalb des gültigen Wertebereichs ({minInputValue} - {maxInputValue}).");
+                    valueIsValid = false;
+                }
+            }
+            while (!valueIsValid);
+
+            return inputValue;
         }
 
         private static int ReadInt(string inputPrompt)
@@ -191,36 +182,6 @@ namespace Lotterie
             while (!inputIsValid);
 
             return inputValue;
-        }
-
-        private static DateTime ReadDateTime(string inputPrompt)
-        {
-            string input = string.Empty;
-            DateTime inputDateTime = DateTime.MinValue;
-            bool inputIsValid = false;
-
-            do
-            {
-                Console.Write(inputPrompt);
-                input = Console.ReadLine();
-
-                try
-                {
-                    inputDateTime = DateTime.ParseExact(input, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                    inputIsValid = true;
-                }
-                catch
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\aERROR: Ungültige Datumseingabe.");
-                    inputDateTime = DateTime.MinValue;
-                    Console.ResetColor();
-                    inputIsValid = false;
-                }
-            }
-            while (!inputIsValid);
-
-            return inputDateTime;
         }
 
         private static void CreateHeader(string headerText, ConsoleColor headerTextColor, bool clearScreen)
