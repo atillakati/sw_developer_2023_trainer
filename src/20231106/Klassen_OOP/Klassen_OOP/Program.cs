@@ -14,13 +14,19 @@ namespace Klassen_OOP
 
             //1. Initialisierung?  DONE!
             //2. Zustandsinformationen nicht geschützt!
-            
-            aBook.DisplayInfo();
 
-            Employee ma = new Employee("Gandalf Sehralt");
+            Console.WriteLine($"Titel: {aBook.Title}");
 
+            //aBook.Title = "Test";
+
+            //aBook.DisplayInfo();
+
+
+            Employee ma = new Employee("Max Mustermann", new DateTime(1980, 5, 20));
+
+            Console.WriteLine($"Geburtsjahr: {ma.BirthYear}");
             ma.ShowInfo();
-
+            
         }
     }
 }

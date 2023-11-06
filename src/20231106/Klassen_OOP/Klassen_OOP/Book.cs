@@ -4,17 +4,17 @@ namespace Klassen_OOP
 {
     internal class Book
     {        
-        public int PageCount;
-        public string Title;
-        public string Author;
-        public string Isbn;
-        public decimal Price;
-
-        public Guid Id;
-        public bool IsAvailable;
-        public DateTime StartBorrowingDate;
-        public DateTime StopBorrowingDate;
-        public bool ReturnDateOverdrawn;
+        private int _pageCount;
+        private string _title;
+        private string _author;
+        private string _isbn;
+        private decimal _price;
+        
+        private Guid _id;
+        private bool _isAvailable;
+        private DateTime _startBorrowingDate;
+        private DateTime _stopBorrowingDate;
+        private bool _returnDateOverdrawn;
 
         //std. Konstruktor
         //public Book()
@@ -33,50 +33,97 @@ namespace Klassen_OOP
         {
             InitBorrowStateInfo();
 
-            Title = title;
-            Author = author;
-            Isbn = isbn;
-            PageCount = pageCount;
-            Price = price;
+            _title = title;
+            _author = author;
+            _isbn = isbn;
+            _pageCount = pageCount;
+            _price = price;
         }
+
+
+        ////Zugriffsmethode
+        //public string GetTitle()
+        //{
+        //    return Title;
+        //}
+
+        //Eigenschaft = Property
+        public string Title
+        {
+            get
+            {                
+                return _title;
+            }
+
+            //set
+            //{
+            //    if (!string.IsNullOrEmpty(value))
+            //    {
+            //        _title = value;
+            //    }
+            //}
+        }
+
+        public decimal Price
+        {
+            get { return _price; }
+            
+            set 
+            {
+                if (value > 0.00m && value < 180.0m)
+                {
+                    _price = value;
+                }
+            }
+        }
+        
+        ////Änderungsmethode
+        //public void SetPrice(decimal newPrice)
+        //{
+        //    if (newPrice > 0.00m && newPrice < 180.0m)
+        //    {
+        //        Price = newPrice;
+        //    }
+        //}
+
 
         private void InitBorrowStateInfo()
         {
-            Id = Guid.NewGuid();
-            IsAvailable = true;
-            StartBorrowingDate = DateTime.MinValue;
-            StopBorrowingDate = DateTime.MinValue;
-            ReturnDateOverdrawn = false;
+            _id = Guid.NewGuid();
+            _isAvailable = true;
+            _startBorrowingDate = DateTime.MinValue;
+            _stopBorrowingDate = DateTime.MinValue;
+            _returnDateOverdrawn = false;
         }
 
         public void StartBorrowing(TimeSpan duration)
         {
-            StartBorrowingDate = DateTime.Now;
-            StopBorrowingDate = StartBorrowingDate.Add(duration);
+            _startBorrowingDate = DateTime.Now;
+            _stopBorrowingDate = _startBorrowingDate.Add(duration);
 
-            IsAvailable = false;
-            ReturnDateOverdrawn = StopBorrowingDate < DateTime.Now;
+            _isAvailable = false;
+            _returnDateOverdrawn = _stopBorrowingDate < DateTime.Now;
         }
 
         public void EndBorrowing()
         {
-            IsAvailable = true;
-            ReturnDateOverdrawn = false;
+            _isAvailable = true;
+            _returnDateOverdrawn = false;
         }
 
         public void DisplayInfo()
         {
             //ReturnDateOverdrawn = StopBorrowingDate < DateTime.Now;
 
-            Console.WriteLine($"ID: {Id}");
-            Console.WriteLine($"Titel: {Title} [{Author}]");
-            Console.WriteLine($"Available: {IsAvailable}");
-            Console.WriteLine($"Overdrawn: {ReturnDateOverdrawn}");
+            Console.WriteLine($"ID: {_id}");
+            Console.WriteLine($"Titel: {_title} [{_author}]");
+            Console.WriteLine($"Available: {_isAvailable}");
+            Console.WriteLine($"Overdrawn: {_returnDateOverdrawn}");
 
-            if (!IsAvailable)
+            if (!_isAvailable)
             {
-                Console.WriteLine($"\tStart: {StartBorrowingDate.ToShortDateString()}");
-                Console.WriteLine($"\tUntil: {StopBorrowingDate.ToShortDateString()}");
+                Console.WriteLine($"\tStart: {_startBorrowingDate.ToShortDateString()}");
+                Console.WriteLine($"\tUntil: {_stopBorrowingDate.ToShortDateString()}");
             }
         }
     }

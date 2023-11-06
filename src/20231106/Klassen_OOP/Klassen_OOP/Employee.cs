@@ -8,24 +8,43 @@ namespace Klassen_OOP
 {
     internal class Employee
     {
-        public string Name;
-        public Guid Id;
+        private string _name;
+        private Guid _id;
+        private DateTime _birthdate;
 
-        public Employee(string name) 
+        public Employee(string name, DateTime birthdate) 
         {
-            Id = Guid.NewGuid();
-            Name = name;
+            _id = Guid.NewGuid();
+            _name = name;
+            _birthdate = birthdate;
         }
 
-        public Employee(Guid id, string name)
+        public Employee(Guid id, string name, DateTime birthdate)
         {
-            Id = id;
-            Name = name;
+            _id = id;
+            _name = name;
+            _birthdate = birthdate;
+        }
+
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        public Guid Id 
+        { 
+            get { return _id; } 
+        }
+
+        public int BirthYear
+        {
+            get { return _birthdate.Year; }
         }
 
         public void ShowInfo()
         {
-            Console.WriteLine($"[{Id}] - {Name}");
+            Console.WriteLine($"[{_id}] - {_name}");
+            Console.WriteLine($"Geburtsdatum: {_birthdate.ToShortDateString()}");
         }
     }
 }
