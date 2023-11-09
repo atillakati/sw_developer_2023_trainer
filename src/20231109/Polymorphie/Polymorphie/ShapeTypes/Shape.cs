@@ -31,13 +31,12 @@ namespace Polymorphie.ShapeTypes
             get { return _cornerCount; }
         }
 
-        public string Description
+        public virtual string Description
         {
             get { return _description; }
         }
 
-
-        public void Draw()
+        public virtual void Draw()
         {
             ConsoleColor oldColor = Console.ForegroundColor;
             Console.ForegroundColor = _color;
