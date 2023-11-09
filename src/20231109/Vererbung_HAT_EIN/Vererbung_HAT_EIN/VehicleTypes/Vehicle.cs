@@ -73,6 +73,11 @@ namespace Vererbung_HAT_EIN.VehicleTypes
             }
         }
 
+        public void MakeSound()
+        {
+            _vehicleRadio.Play();
+        }
+
         public void SpeedUp(int delta)
         {
             if (_currentSpeed + delta < 0)
@@ -93,6 +98,7 @@ namespace Vererbung_HAT_EIN.VehicleTypes
         {
             Console.WriteLine($"{_description.ToUpper()} - {_ps} PS");
             Console.WriteLine($"Speed: {_currentSpeed} of max. {_maxSpeed} km/h");
+            _vehicleRadio.ShowState();
         }
     }
 }

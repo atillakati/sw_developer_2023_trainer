@@ -7,21 +7,21 @@ namespace Vererbung_HAT_EIN
     {
         static void Main(string[] args)
         {
-            Radio radio = new Radio();
+            //Radio radio = new Radio();
 
-            radio.ShowState();
-            radio.Play();
+            //radio.ShowState();
+            //radio.Play();
 
-            radio.ChangePowerState(DevicePower.On);
-            radio.Frequency = 102.0;
+            //radio.ChangePowerState(DevicePower.On);
+            //radio.Frequency = 102.0;
 
-            radio.ShowState();
-            radio.Play();
+            //radio.ShowState();
+            //radio.Play();
 
             var meinAuto = new Vehicle();
 
             meinAuto.SetEntertainmentPower(true);
-            Console.WriteLine(meinAuto.VehicleRadio.Frequency);
+            meinAuto.ShowInfo();
         }
     }
 }
