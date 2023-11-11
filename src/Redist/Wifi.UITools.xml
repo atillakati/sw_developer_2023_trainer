@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wifi.UITools</name>
+    </assembly>
+    <members>
+        <member name="T:Wifi.UITools.ConsoleTools">
+            <summary>
+            Sammelsurium von Methoden für die Arbeit in der Console.
+            </summary>
+        </member>
+        <member name="M:Wifi.UITools.ConsoleTools.ReadString(System.String)">
+            <summary>
+            Liefert eine Eingabe als string zurück. string.Empty und NULL werden nicht akzeptiert.
+            </summary>
+            <param name="inputPrompt">Text für die Eingabeaufforderung</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wifi.UITools.ConsoleTools.CreateHeader(System.String,System.ConsoleColor,System.Boolean)">
+            <summary>
+            Generiert eine Überschrift mit einem Titel.       
+            </summary>
+            <param name="headerText">Der Titel der in der Überschrift dargestellt werden soll.</param>
+            <param name="headerTextColor">Die Farbe in welcher der Titel dargestellt werden soll.</param>
+            <param name="clearScreen">true, wenn der Bildschirm vor der Ausgabe gelöscht werden soll, sonst false.</param>
+        </member>
+    </members>
+</doc>
