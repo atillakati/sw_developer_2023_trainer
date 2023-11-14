@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Wifi.UITools
 {
+    public delegate void InvalidInputHandler(string invalidUserInput);
+
     /// <summary>
     /// Sammelsurium von Methoden für die Arbeit in der Console.
     /// </summary>
@@ -33,6 +32,11 @@ namespace Wifi.UITools
 
         public static int ReadInt(string inputPrompt)
         {
+            return ReadInt(inputPrompt, DefaultErrorHandler);
+        }
+
+        public static int ReadInt(string inputPrompt, InvalidInputHandler invalidInputHandler)
+        {
             string input = string.Empty;
             int inputValue = 0;
             bool inputIsValid = false;
@@ -49,16 +53,26 @@ namespace Wifi.UITools
                 }
                 catch
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\aERROR: Ungültige Eingabe.");
+                    if (invalidInputHandler != null)
+                    {
+                        invalidInputHandler(input);
+                    }
+                    //invalidInputHandler?.Invoke(input);
+
                     inputValue = 0;
-                    Console.ResetColor();
                     inputIsValid = false;
                 }
             }
             while (!inputIsValid);
 
             return inputValue;
+        }
+
+        private static void DefaultErrorHandler(string invalidUserInput)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\aERROR: Ungültige Eingabe.");            
+            Console.ResetColor();            
         }
 
         public static DateTime ReadDateTime(string inputPrompt)
