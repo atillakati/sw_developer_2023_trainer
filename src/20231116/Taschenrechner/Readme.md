@@ -14,3 +14,7 @@ Quelle: [MVC](https://de.wikipedia.org/wiki/Model_View_Controller)
 ![Klassendiagramm](img/ClassDiagram.drawio.png)
 
 
+Weitere Quellen:
+- [Code Project](https://www.codeproject.com/Articles/383153/The-Model-View-Controller-MVC-Pattern-with-Csharp)
+- [Github.com](https://github.com/shane-lab/winforms-mvc)
+- [C# Corner](https://www.c-sharpcorner.com/article/introduction-to-model-view-control-mvc-pattern-using-C-Sharp/)
