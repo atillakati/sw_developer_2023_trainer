@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Taschenrechner.ControllerTypes;
 
 namespace Taschenrechner
 {
@@ -16,7 +14,13 @@ namespace Taschenrechner
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            var view = new CalcForm();
+
+            var controller = new CalculatorController(view);
+            view.SetController(controller);
+
+            Application.Run(view);
         }
     }
 }
