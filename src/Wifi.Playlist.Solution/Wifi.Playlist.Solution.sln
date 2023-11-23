@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wifi.Playlist.Items", "Wifi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wifi.Playlist.Repositories", "Wifi.Playlist.Repositories\Wifi.Playlist.Repositories.csproj", "{8758FCF0-33F3-4BC0-B7D9-379B79AA132C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wifi.Playlist.CoreTypes.Test", "Wifi.Playlist.CoreTypes.Test\Wifi.Playlist.CoreTypes.Test.csproj", "{EF9F9029-8150-4868-84AB-92E717E49B2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{8758FCF0-33F3-4BC0-B7D9-379B79AA132C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8758FCF0-33F3-4BC0-B7D9-379B79AA132C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8758FCF0-33F3-4BC0-B7D9-379B79AA132C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF9F9029-8150-4868-84AB-92E717E49B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF9F9029-8150-4868-84AB-92E717E49B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF9F9029-8150-4868-84AB-92E717E49B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF9F9029-8150-4868-84AB-92E717E49B2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
