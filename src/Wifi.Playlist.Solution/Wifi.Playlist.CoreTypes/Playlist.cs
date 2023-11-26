@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Wifi.Playlist.CoreTypes
 {
-    public class Playlist
+    public class Playlist : IPlaylist
     {
         private List<IPlaylistItem> _items;
-		private string _name;
-		private string _author;
-		private DateTime _createdAt;
+        private string _name;
+        private string _author;
+        private DateTime _createdAt;
 
-		public Playlist(string name, string author)
-			: this(name, author, DateTime.Now) { }
+        public Playlist(string name, string author)
+            : this(name, author, DateTime.Now) { }
 
         public Playlist(string name, string author, DateTime createAt)
         {
@@ -27,64 +27,64 @@ namespace Wifi.Playlist.CoreTypes
 
 
         public DateTime CreatedAt
-		{
-			get { return _createdAt; }			
-		}
+        {
+            get { return _createdAt; }
+        }
 
-		public string Author
-		{
-			get { return _author; }
-			set { _author = value; }
-		}
+        public string Author
+        {
+            get { return _author; }
+            set { _author = value; }
+        }
 
-		public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
-		public IEnumerable<IPlaylistItem> Items
-		{
-			get { return _items; }
-		}
+        public IEnumerable<IPlaylistItem> Items
+        {
+            get { return _items; }
+        }
 
-		public TimeSpan Duration
-		{
-			get
-			{
-				var sum = TimeSpan.Zero;
+        public TimeSpan Duration
+        {
+            get
+            {
+                var sum = TimeSpan.Zero;
 
-				if(_items.Count == 0)
-				{
-					return sum;
-				}
+                if (_items.Count == 0)
+                {
+                    return sum;
+                }
 
-				_items.ForEach(x => sum = sum.Add(x.Duration));
+                _items.ForEach(x => sum = sum.Add(x.Duration));
 
-				return sum;
-			}
-		}
+                return sum;
+            }
+        }
 
 
-		public void Add(IPlaylistItem item)
-		{
-			if (item != null)
-			{
-				_items.Add(item);
-			}
-		}
+        public void Add(IPlaylistItem item)
+        {
+            if (item != null)
+            {
+                _items.Add(item);
+            }
+        }
 
-		public void Remove(IPlaylistItem item)
-		{
+        public void Remove(IPlaylistItem item)
+        {
             if (item != null)
             {
                 _items.Remove(item);
             }
         }
 
-		public void Clear()
-		{
-			_items.Clear();
-		}
-	}
+        public void Clear()
+        {
+            _items.Clear();
+        }
+    }
 }
