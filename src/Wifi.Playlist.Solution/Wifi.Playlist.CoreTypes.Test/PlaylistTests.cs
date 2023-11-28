@@ -136,12 +136,18 @@ namespace Wifi.Playlist.CoreTypes.Test
             var item1 = new Mock<IPlaylistItem>();
            
             item1.Setup(x => x.Duration).Returns(TimeSpan.FromSeconds(80));
+            item1.Setup(x => x.Author).Returns("Gandi");
+            item1.Setup(x => x.Title).Returns("MyMusic");
 
             //act
             _fixture.Add(item1.Object);
 
             //assert
             Assert.That(_fixture.Items.Count, Is.EqualTo(1));
+            //or
+            //var addedItem = _fixture.Items.FirstOrDefault();
+            //Assert.That(addedItem.Title, Is.EqualTo("MyMusic"));
+            //Assert.That(addedItem.Author, Is.EqualTo("Gandi"));
         }
 
         [Test]
