@@ -48,6 +48,8 @@
             this.lst_itemsView = new System.Windows.Forms.ListView();
             this.lbl_itemDetails = new System.Windows.Forms.Label();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -59,7 +61,7 @@
             this.itemsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(739, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1040, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -108,8 +110,9 @@
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // itemsToolStripMenuItem
             // 
@@ -127,12 +130,14 @@
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.addToolStripMenuItem.Text = "Add";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -142,8 +147,9 @@
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -153,14 +159,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(739, 73);
+            this.panel1.Size = new System.Drawing.Size(1040, 73);
             this.panel1.TabIndex = 1;
             // 
             // lbl_playlistDetails
             // 
             this.lbl_playlistDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_playlistDetails.AutoSize = true;
-            this.lbl_playlistDetails.Location = new System.Drawing.Point(468, 47);
+            this.lbl_playlistDetails.Location = new System.Drawing.Point(769, 47);
             this.lbl_playlistDetails.Name = "lbl_playlistDetails";
             this.lbl_playlistDetails.Size = new System.Drawing.Size(259, 13);
             this.lbl_playlistDetails.TabIndex = 1;
@@ -184,20 +190,21 @@
             this.lst_itemsView.HideSelection = false;
             this.lst_itemsView.Location = new System.Drawing.Point(0, 103);
             this.lst_itemsView.Name = "lst_itemsView";
-            this.lst_itemsView.Size = new System.Drawing.Size(739, 496);
+            this.lst_itemsView.Size = new System.Drawing.Size(1040, 496);
             this.lst_itemsView.TabIndex = 2;
             this.lst_itemsView.UseCompatibleStateImageBehavior = false;
+            this.lst_itemsView.SelectedIndexChanged += new System.EventHandler(this.lst_itemsView_SelectedIndexChanged);
             // 
             // lbl_itemDetails
             // 
             this.lbl_itemDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_itemDetails.AutoSize = true;
-            this.lbl_itemDetails.Location = new System.Drawing.Point(12, 619);
+            this.lbl_itemDetails.Location = new System.Drawing.Point(12, 611);
             this.lbl_itemDetails.Name = "lbl_itemDetails";
-            this.lbl_itemDetails.Size = new System.Drawing.Size(483, 13);
+            this.lbl_itemDetails.Size = new System.Drawing.Size(479, 26);
             this.lbl_itemDetails.TabIndex = 3;
-            this.lbl_itemDetails.Text = "Pfad: \"C:\\myCode\\Repos\\sw_developer_2023_trainer\\DemoFiles\\001 - Bruno Mars - Gre" +
-    "nade.mp3\"";
+            this.lbl_itemDetails.Text = "Pfad:   C:\\myCode\\Repos\\sw_developer_2023_trainer\\DemoFiles\\001 - Bruno Mars - Gr" +
+    "enade.mp3\r\nDauer: 00:00:00";
             // 
             // imageList
             // 
@@ -205,11 +212,15 @@
             this.imageList.ImageSize = new System.Drawing.Size(128, 128);
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(739, 650);
+            this.ClientSize = new System.Drawing.Size(1040, 650);
             this.Controls.Add(this.lbl_itemDetails);
             this.Controls.Add(this.lst_itemsView);
             this.Controls.Add(this.panel1);
@@ -249,6 +260,8 @@
         private System.Windows.Forms.ListView lst_itemsView;
         private System.Windows.Forms.Label lbl_itemDetails;
         private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

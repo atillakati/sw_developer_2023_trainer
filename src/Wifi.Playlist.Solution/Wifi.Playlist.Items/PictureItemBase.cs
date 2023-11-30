@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using TagLib;
 using Wifi.Playlist.CoreTypes;
+using static System.Net.Mime.MediaTypeNames;
 using File = TagLib.File;
 
 namespace Wifi.Playlist.Items
@@ -57,23 +58,22 @@ namespace Wifi.Playlist.Items
 
         public string FilePath => _filePath;
 
-        public Image Thumbnail
+        public System.Drawing.Image Thumbnail
         {
             get
             {
-                if (_tagFile.Tag.Pictures != null && _tagFile.Tag.Pictures.Length > 0)
-                {
-                    //https://stackoverflow.com/questions/10247216/c-sharp-mp3-id-tags-with-taglib-album-art
-                    return Image.FromStream(new MemoryStream(_tagFile.Tag.Pictures[0].Data.Data));
-                    //return _tagFile.Tag.Pictures[0].Data.Data;
-                }
-
-                return null;
+                var image = System.Drawing.Image.FromFile(_filePath);
+                return image.GetThumbnailImage(128, 128, null, IntPtr.Zero);
             }
         }
 
         public string Description => $"{_extension.ToUpper().Replace(".", "")} picture file";
 
         public string Extension => _extension;
+
+        public override string ToString()
+        {
+            return Path.GetFileNameWithoutExtension(_filePath);
+        }
     }
 }
