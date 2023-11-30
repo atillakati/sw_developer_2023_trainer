@@ -47,13 +47,36 @@ namespace Wifi.Playlist.FormsUI
                 return;
             }
 
+            //HACK: Wird verbessert!! 
             _playlist = new CoreTypes.Playlist(_newPlaylistDataProvider.PlaylistName,
                                                _newPlaylistDataProvider.PlaylistAuthor);            
 
             //update view
             EnableEditControls(true);
             ShowPlaylistDetails();
-            //ShowPlaylistItems();
+            ShowPlaylistItems();
+        }
+
+        private void ShowPlaylistItems()
+        {
+            int imageIndex = 0;
+
+            lst_itemsView.Items.Clear();
+            imageList.Images.Clear();
+
+            foreach (var item in _playlist.Items)
+            {
+                var listViewItem = new ListViewItem(item.ToString());
+                listViewItem.Tag = item;
+
+                if (item.Thumbnail != null)
+                {
+                    imageList.Images.Add(item.Thumbnail);
+                    listViewItem.ImageIndex = imageIndex++;
+                }
+            }
+
+            lst_itemsView.LargeImageList = imageList;
         }
 
         private void ShowPlaylistDetails()
