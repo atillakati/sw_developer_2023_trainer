@@ -1,11 +1,7 @@
 ﻿using PlaylistsNET.Content;
 using PlaylistsNET.Models;
 using System;
-using System.Collections.Generic;
 using System.IO.Abstractions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Wifi.Playlist.CoreTypes;
 
 namespace Wifi.Playlist.Repositories
@@ -31,18 +27,23 @@ namespace Wifi.Playlist.Repositories
 
         public void Save(IPlaylist playlist, string filePath)
         {
+            if(playlist == null)
+            {
+                return;
+            }
+
             var m3uPlaylist = new M3uPlaylist();
             m3uPlaylist.IsExtended = true;
 
             m3uPlaylist.Comments.Add($"#Title:{playlist.Name}");
             m3uPlaylist.Comments.Add($"#Author:{playlist.Author}");
-            m3uPlaylist.Comments.Add($"#CreatedAt:{playlist.CreatedAt}");
+            m3uPlaylist.Comments.Add($"#CreatedAt:{playlist.CreatedAt.ToShortDateString()}");
 
             foreach (var item in playlist.Items)
             {
                 var entityItem = new M3uPlaylistEntry()
                 {
-                    AlbumArtist = item.Author,
+                    AlbumArtist = item.Author,                    
                     Duration = item.Duration,
                     Path = item.FilePath,
                     Title = item.Title
@@ -51,13 +52,11 @@ namespace Wifi.Playlist.Repositories
                 m3uPlaylist.PlaylistEntries.Add(entityItem);
             }
             
-            var content = new M3uContent();
-            string text = content.ToText(m3uPlaylist);
-
-            using(var stream = _fileSystem.File.CreateText(filePath))
-            {                
-                stream.WriteLine(text);
-            }
+            //var content = new M3uContent();
+            //string text = content.ToText(m3uPlaylist);
+            var text = PlaylistToTextHelper.ToText(m3uPlaylist);            
+            
+            _fileSystem.File.WriteAllText(filePath, text);           
         }
     }
 }
