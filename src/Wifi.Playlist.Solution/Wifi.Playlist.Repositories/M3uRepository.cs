@@ -16,6 +16,8 @@ namespace Wifi.Playlist.Repositories
         {
             _fileSystem = fileSystem;
         }
+        
+
         public string Description => "M3U Playlist format";
 
         public string Extension => ".m3u";
