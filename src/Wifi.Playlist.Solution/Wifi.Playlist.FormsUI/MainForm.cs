@@ -99,8 +99,9 @@ namespace Wifi.Playlist.FormsUI
         }
 
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            openFileDialog.Multiselect = true;
+        {            
+            SetupFileDialog(openFileDialog, "Select Item", string.Empty, 
+                            true, _playlistItemFactory.AvailableTypes);
 
             if (openFileDialog.ShowDialog() != DialogResult.OK)
             {
@@ -120,6 +121,39 @@ namespace Wifi.Playlist.FormsUI
 
             ShowPlaylistDetails();
             ShowPlaylistItems();
+        }
+
+        private void SetupFileDialog(FileDialog fileDialog, string title, string defaultFileName, bool multiselect, IEnumerable<IFileInfo> availableTypes)
+        {           
+            if(fileDialog is OpenFileDialog openFileDialog)
+            {                
+                openFileDialog.Multiselect = multiselect;
+            }
+            
+            fileDialog.Title = title;
+            fileDialog.FileName = defaultFileName;
+            fileDialog.Filter = CreateFilter(availableTypes);            
+        }
+
+        private string CreateFilter(IEnumerable<IFileInfo> availableTypes)
+        {
+            string filter = string.Empty;
+
+            filter = "All supported types|";
+
+            var extensions = availableTypes.Select(x => x.Extension);
+            extensions.ToList().ForEach(extension => filter += "*" + extension + ";");
+
+            filter += "|";
+
+            foreach (var type in availableTypes)
+            {
+                filter += $"{type.Description}|*{type.Extension}|";
+            }
+
+            //remove last | from filter string
+            filter = filter.Substring(0, filter.Length - 1);
+            return filter;
         }
 
         private void lst_itemsView_SelectedIndexChanged(object sender, EventArgs e)
@@ -190,6 +224,9 @@ namespace Wifi.Playlist.FormsUI
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SetupFileDialog(saveFileDialog1, "Save playlist as",
+                            _playlist.Name, false, _repositoryFactory.AvailableTypes);
+
             if(saveFileDialog1.ShowDialog() != DialogResult.OK) 
             {
                 return;
