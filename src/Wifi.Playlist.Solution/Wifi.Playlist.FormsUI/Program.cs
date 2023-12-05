@@ -25,8 +25,9 @@ namespace Wifi.Playlist.FormsUI
 
             //factories erzeugen
             var itemFactory = new PlaylistItemFactory();
+            var repositoryFactory = new RepositoryFactory();
 
-            Application.Run(new MainForm(provider, itemFactory));
+            Application.Run(new MainForm(provider, itemFactory, repositoryFactory));
         }
     }
 }

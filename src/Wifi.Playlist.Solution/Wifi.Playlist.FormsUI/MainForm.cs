@@ -17,14 +17,17 @@ namespace Wifi.Playlist.FormsUI
         private CoreTypes.Playlist _playlist;
         private readonly INewPlaylistDataProvider _newPlaylistDataProvider;
         private readonly IPlaylistItemFactory _playlistItemFactory;
+        private readonly IRepositoryFactory _repositoryFactory;
 
         public MainForm(INewPlaylistDataProvider newPlaylistDataProvider,
-                        IPlaylistItemFactory playlistItemFactory)
+                        IPlaylistItemFactory playlistItemFactory,
+                        IRepositoryFactory repositoryFactory)
         {
             InitializeComponent();
 
             _newPlaylistDataProvider = newPlaylistDataProvider;
             _playlistItemFactory = playlistItemFactory;
+            _repositoryFactory = repositoryFactory;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -193,7 +196,12 @@ namespace Wifi.Playlist.FormsUI
             }
 
             var playlistPath = saveFileDialog1.FileName;
+            var repository = _repositoryFactory.Create(playlistPath);
 
+            if(repository != null)
+            {
+                repository.Save(_playlist, playlistPath);
+            }
         }
     }
 }
