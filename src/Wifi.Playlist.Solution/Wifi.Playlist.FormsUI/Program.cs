@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,15 +20,23 @@ namespace Wifi.Playlist.FormsUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //create types
-            //var provider = new NewPlaylistForm();
-            var provider = new DummyEditor();
+            //builder erzeugen
+            var builder = new ContainerBuilder();
 
-            //factories erzeugen
-            var itemFactory = new PlaylistItemFactory();
-            var repositoryFactory = new RepositoryFactory(itemFactory);
+            //typen registrieren
+            //builder.RegisterType<DummyEditor>().As<INewPlaylistDataProvider>();
+            builder.RegisterType<NewPlaylistForm>().As<INewPlaylistDataProvider>();
+            builder.RegisterType<PlaylistItemFactory>().As<IPlaylistItemFactory>();
+            builder.RegisterType<RepositoryFactory>().As<IRepositoryFactory>();
+            builder.RegisterType<MainForm>();
 
-            Application.Run(new MainForm(provider, itemFactory, repositoryFactory));
+            //container erzeugen
+            var container = builder.Build();
+
+            //Typen erzeugen lassen
+            var mainForm = container.Resolve<MainForm>();           
+
+            Application.Run(mainForm);
         }
     }
 }
