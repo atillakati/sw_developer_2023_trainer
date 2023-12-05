@@ -14,7 +14,7 @@ namespace Wifi.Playlist.FormsUI
 {
     public partial class MainForm : Form
     {
-        private CoreTypes.Playlist _playlist;
+        private IPlaylist _playlist;
         private readonly INewPlaylistDataProvider _newPlaylistDataProvider;
         private readonly IPlaylistItemFactory _playlistItemFactory;
         private readonly IRepositoryFactory _repositoryFactory;
@@ -238,6 +238,27 @@ namespace Wifi.Playlist.FormsUI
             if(repository != null)
             {
                 repository.Save(_playlist, playlistPath);
+            }
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetupFileDialog(openFileDialog, "Select Playlist", "", false, 
+                            _repositoryFactory.AvailableTypes);
+
+            if(openFileDialog.ShowDialog() != DialogResult.OK) 
+            { 
+                return; 
+            }
+
+            var repository = _repositoryFactory.Create(openFileDialog.FileName);
+            if(repository != null)
+            {
+                _playlist = repository.Load(openFileDialog.FileName);
+
+                EnableEditControls(true);
+                ShowPlaylistDetails();
+                ShowPlaylistItems();
             }
         }
     }

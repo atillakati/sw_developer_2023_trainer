@@ -14,10 +14,10 @@ namespace Wifi.Playlist.Repositories.Test
     [TestFixture]
     public class M3uRepositoryTests
     {
-        private M3uRepository _fixture;   
+        private M3uRepository _fixture;
         //private MockFileSystem _mockFileSystem;
         private Mock<IFileSystem> _mockedFileSystem;
-        private Mock<IPlaylist> _mockedPlaylist;        
+        private Mock<IPlaylist> _mockedPlaylist;
 
         [SetUp]
         public void Init()
@@ -41,8 +41,17 @@ namespace Wifi.Playlist.Repositories.Test
             _mockedPlaylist.Setup(x => x.Author).Returns("Gandalf");
             _mockedPlaylist.Setup(x => x.CreatedAt).Returns(DateTime.Now);
             _mockedPlaylist.Setup(x => x.Items).Returns(new IPlaylistItem[] { playlistItem1.Object, playlistItem2.Object });
-            
+
             _fixture = new M3uRepository(_mockedFileSystem.Object);
+        }
+
+        [Test]
+        public void Load()
+        {
+            _fixture = new M3uRepository();
+
+            var playlist = _fixture.Load(@"C:\Users\User\Desktop\atilla.m3u");
+
         }
 
         [Test]
@@ -52,9 +61,9 @@ namespace Wifi.Playlist.Repositories.Test
             string createdContent = string.Empty;
             string referenceContent = "#EXTM3U\r\n##Title:My super charts 2022\r\n##Author:Gandalf\r\n##CreatedAt:05.12.2023\r\n#EXTART:Super singer 1\r\n#EXTINF:15,Song title 1\r\nsong1.mp3\r\n#EXTART:Super singer 2\r\n#EXTINF:25,Song title 2\r\nsong2.mp3";
 
-            var mockedFile = new Mock<IFile>(); 
+            var mockedFile = new Mock<IFile>();
             mockedFile.Setup(x => x.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
-                      .Callback<string, string>((path, content) => 
+                      .Callback<string, string>((path, content) =>
                       {
                           createdContent = content;
                       });

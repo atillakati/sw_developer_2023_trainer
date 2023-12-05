@@ -11,9 +11,16 @@ namespace Wifi.Playlist.Factories
 {
     public class RepositoryFactory : IRepositoryFactory
     {
+        private IPlaylistItemFactory _itemFactory;
+
+        public RepositoryFactory(IPlaylistItemFactory itemFactory)
+        {
+            _itemFactory = itemFactory;
+        }
+
         public IEnumerable<IFileInfo> AvailableTypes => new IFileInfo[] 
         {   
-            new M3uRepository()
+            new M3uRepository(null)
         };
 
         public IPlaylistRepository Create(string fileName)
@@ -30,7 +37,7 @@ namespace Wifi.Playlist.Factories
             switch (ext)
             {
                 case ".m3u":
-                    repository = new M3uRepository();
+                    repository = new M3uRepository(_itemFactory);
                     break;
                 
                 //hier kommen dann weitere typen hinzu...
