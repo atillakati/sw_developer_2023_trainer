@@ -24,8 +24,8 @@ namespace Wifi.Playlist.FormsUI
             var builder = new ContainerBuilder();
 
             //typen registrieren
-            //builder.RegisterType<DummyEditor>().As<INewPlaylistDataProvider>();
-            builder.RegisterType<NewPlaylistForm>().As<INewPlaylistDataProvider>();
+            builder.RegisterType<DummyEditor>().As<INewPlaylistDataProvider>();
+            //builder.RegisterType<NewPlaylistForm>().As<INewPlaylistDataProvider>();
             builder.RegisterType<PlaylistItemFactory>().As<IPlaylistItemFactory>();
             builder.RegisterType<RepositoryFactory>().As<IRepositoryFactory>();
             builder.RegisterType<MainForm>();
