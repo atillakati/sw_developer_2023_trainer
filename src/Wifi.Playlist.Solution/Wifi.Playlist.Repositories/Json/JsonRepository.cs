@@ -29,12 +29,19 @@ namespace Wifi.Playlist.Repositories.Json
 
         public IPlaylist Load(string filePath)
         {
-            throw new NotImplementedException();
+            var content = _fileSystem.File.ReadAllText(filePath);
+
+            var entity = JsonConvert.DeserializeObject<PlaylistEntity>(content);
+
+            return entity.ToDomain(_playlistItemFactory);
         }
 
         public void Save(IPlaylist playlist, string filePath)
         {
-            string json = JsonConvert.SerializeObject(playlist);
+            var entity = playlist.ToEntity();
+
+            string json = JsonConvert.SerializeObject(entity);
+
             _fileSystem.File.WriteAllText(filePath, json);
         }
     }
