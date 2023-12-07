@@ -10,7 +10,7 @@ using Wifi.Playlist.CoreTypes;
 
 namespace Wifi.Playlist.WeatherExtension
 {
-    public class CurrentWeatherService 
+    public class CurrentWeatherService : ICurrentWeatherService
     {
         //ToDo: https://techcommunity.microsoft.com/t5/apps-on-azure-blog/how-to-store-app-secrets-for-your-asp-net-core-project/ba-p/1527531
         private static string API_KEY = "7ff2da64686f8e94c04090eb7e36abcd";
@@ -40,15 +40,15 @@ namespace Wifi.Playlist.WeatherExtension
 
         public double Temperatur => _temperatur;
 
-		public async Task<bool> UpdateCurrentWeatherAsync(string city, string countryCode)
-		{
-			if(await SetGeoLocationAsync(city, counterCode))
-			{
-				return await UpdateCurrentWeatherAsync();
-			}
-			
-			return false;
-		}
+        public async Task<bool> UpdateCurrentWeatherAsync(string city, string countryCode)
+        {
+            if (await SetGeoLocationAsync(city, countryCode))
+            {
+                return await UpdateCurrentWeatherAsync();
+            }
+
+            return false;
+        }
 
         public async Task<bool> UpdateCurrentWeatherAsync()
         {
@@ -61,7 +61,7 @@ namespace Wifi.Playlist.WeatherExtension
             if (response.StatusCode == System.Net.HttpStatusCode.OK && !string.IsNullOrEmpty(response.Content))
             {
                 var weatherData = JsonConvert.DeserializeObject<CurrentWeather>(response.Content);
-                
+
                 if (weatherData != null && weatherData.weather != null)
                 {
                     _temperatur = (double)weatherData.main.temp;
@@ -76,7 +76,7 @@ namespace Wifi.Playlist.WeatherExtension
             }
 
             return false;
-        }      
+        }
 
         public async Task<bool> SetGeoLocationAsync(string city, string countryCode)
         {
@@ -102,8 +102,8 @@ namespace Wifi.Playlist.WeatherExtension
 
             return false;
         }
-		
-		private Image DownloadImageFromUrl(string imageUrl)
+
+        private Image DownloadImageFromUrl(string imageUrl)
         {
             Image image = null;
 

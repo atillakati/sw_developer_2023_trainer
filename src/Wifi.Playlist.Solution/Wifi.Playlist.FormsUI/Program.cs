@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Wifi.Playlist.CoreTypes;
 using Wifi.Playlist.Factories;
+using Wifi.Playlist.WeatherExtension;
 
 namespace Wifi.Playlist.FormsUI
 {
@@ -28,6 +29,8 @@ namespace Wifi.Playlist.FormsUI
             //builder.RegisterType<NewPlaylistForm>().As<INewPlaylistDataProvider>();
             builder.RegisterType<PlaylistItemFactory>().As<IPlaylistItemFactory>();
             builder.RegisterType<RepositoryFactory>().As<IRepositoryFactory>();
+            //builder.RegisterType<CurrentWeatherService>().As<ICurrentWeatherService>();
+            builder.RegisterType<CurrentWeatherProxy>().As<ICurrentWeatherService>();
             builder.RegisterType<MainForm>();
 
             //container erzeugen

@@ -18,25 +18,39 @@ namespace Wifi.Playlist.FormsUI
         private readonly INewPlaylistDataProvider _newPlaylistDataProvider;
         private readonly IPlaylistItemFactory _playlistItemFactory;
         private readonly IRepositoryFactory _repositoryFactory;
+        private readonly ICurrentWeatherService _currentWeatherService;
 
         public MainForm(INewPlaylistDataProvider newPlaylistDataProvider,
                         IPlaylistItemFactory playlistItemFactory,
-                        IRepositoryFactory repositoryFactory)
+                        IRepositoryFactory repositoryFactory,
+                        ICurrentWeatherService currentWeatherService)
         {
             InitializeComponent();
 
             _newPlaylistDataProvider = newPlaylistDataProvider;
             _playlistItemFactory = playlistItemFactory;
             _repositoryFactory = repositoryFactory;
+            _currentWeatherService = currentWeatherService;
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             lbl_playlistName.Text = string.Empty;
             lbl_itemDetails.Text = string.Empty;
             lbl_playlistDetails.Text = string.Empty;
 
             EnableEditControls(false);
+
+            await _currentWeatherService.SetGeoLocationAsync("Dornbirn", "AT");
+            _currentWeatherService.UpdateCurrentWeatherAsync();
+
+            UpdateWeather();
+        }
+
+        private void UpdateWeather()
+        {
+            img_weatherIcon.Image = _currentWeatherService.Thumbnail;
+            toolTip.SetToolTip(img_weatherIcon, $"{_currentWeatherService.LocationName} - {_currentWeatherService.Description}");
         }
 
         private void EnableEditControls(bool controlsEnabled)
@@ -260,6 +274,12 @@ namespace Wifi.Playlist.FormsUI
                 ShowPlaylistDetails();
                 ShowPlaylistItems();
             }
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            UpdateWeather();
+            timer.Enabled = false;
         }
     }
 }
